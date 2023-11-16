@@ -2,52 +2,34 @@
 
 namespace Storyblok;
 
-use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\RequestOptions;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Handler\CurlHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
 
 /**
-* Storyblok Client
-*/
+ * Storyblok Client.
+ */
 class ManagementClient extends BaseClient
 {
     /**
      * @param string $apiKey
      * @param string $apiEndpoint
      * @param string $apiVersion
+     * @param mixed  $ssl
      */
-    function __construct($apiKey = null, $apiEndpoint = "mapi.storyblok.com", $apiVersion = "v1")
+    function __construct($apiKey = null, $apiEndpoint = 'mapi.storyblok.com', $apiVersion = 'v1', $ssl = false)
     {
-    	parent::__construct($apiKey, $apiEndpoint, $apiVersion, false);
+        parent::__construct($apiKey, $apiEndpoint, $apiVersion, $ssl);
     }
 
-    /**
-     * @param \Psr\Http\Message\ResponseInterface $responseObj
-     *
-     * @return \stdClass
-     */
-    public function responseHandler($responseObj)
+    public function responseHandler($responseObj, $queryString = null): Response
     {
-        $httpResponseCode = $responseObj->getStatusCode();
-        $data = (string) $responseObj->getBody();
-        $jsonResponseData = (array) json_decode($data, true);
-
-        // return response data as json if possible, raw if not
-        $this->responseBody = $data && empty($jsonResponseData) ? $data : $jsonResponseData;
-        $this->responseCode = $httpResponseCode;
-        $this->responseHeaders = $responseObj->getHeaders();
-        return $this;
+        return parent::responseHandler($responseObj, $queryString);
     }
 
     /**
      * @param string $endpointUrl
      * @param array  $payload
      *
-     * @return \stdClass
+     * @return Response
      *
      * @throws ApiException
      */
@@ -86,8 +68,8 @@ class ManagementClient extends BaseClient
     {
         try {
             $requestOptions = [
-            	RequestOptions::JSON => $payload,
-            	RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()]
+                RequestOptions::JSON => $payload,
+                RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()],
             ];
 
             if ($this->getProxy()) {
@@ -106,7 +88,7 @@ class ManagementClient extends BaseClient
      * @param string $endpointUrl
      * @param array  $payload
      *
-     * @return \stdClass
+     * @return Response
      *
      * @throws ApiException
      */
@@ -114,8 +96,8 @@ class ManagementClient extends BaseClient
     {
         try {
             $requestOptions = [
-            	RequestOptions::JSON => $payload,
-            	RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()]
+                RequestOptions::JSON => $payload,
+                RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()],
             ];
 
             if ($this->getProxy()) {
@@ -133,7 +115,7 @@ class ManagementClient extends BaseClient
     /**
      * @param string $endpointUrl
      *
-     * @return \stdClass
+     * @return Response
      *
      * @throws ApiException
      */
@@ -141,7 +123,7 @@ class ManagementClient extends BaseClient
     {
         try {
             $requestOptions = [
-            	RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()]
+                RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()],
             ];
 
             if ($this->getProxy()) {

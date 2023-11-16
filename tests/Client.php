@@ -1,15 +1,15 @@
 <?php
+
 require '../vendor/autoload.php';
 
-$client = new \Storyblok\Client('Iw3XKcJb6MwkdZEwoQ9BCQtt'); //
+$client = new \Storyblok\Client('Iw3XKcJb6MwkdZEwoQ9BCQtt');
 
 // Optionally set a cache
-$client->setCache('filesytem', array('path' => 'cache'));
+$client->setCache('filesytem', ['path' => 'cache']);
 
 // Get the story as array
 $client->getStoryBySlug('home');
 $data = $client->getBody();
-
 
 echo '<link href="https://getuikit.com/css/theme.css?174" rel="stylesheet" type="text/css">';
 echo '<div class="uk-container uk-container-center uk-margin-large-top uk-margin-large-bottom">
@@ -19,7 +19,6 @@ echo '<div class="uk-container uk-container-center uk-margin-large-top uk-margin
 var_dump($data);
 echo '	</pre>';
 echo '<hr>';
-
 
 // Get the story as array
 $client->getStoryByUuid('0c092d14-5cd4-477e-922c-c7f8e330aaea');
@@ -44,23 +43,23 @@ $tree = $client->editMode()->getLinks()->getAsTree();
 echo '<h2> getLinks | getAsTree </h2>
 			<ul>';
 foreach ($tree as $item) {
-	echo '<li>' . $item['item']['name'];
+    echo '<li>' . $item['item']['name'];
 
-	if (!empty($item['children'])) {
-		echo '<ul>';
-		foreach ($item['children'] as $item2) {
-			echo '<li>' . $item2['item']['name'] . '</li>';
-		}
-		echo '</ul>';
-	}
+    if (!empty($item['children'])) {
+        echo '<ul>';
+        foreach ($item['children'] as $item2) {
+            echo '<li>' . $item2['item']['name'] . '</li>';
+        }
+        echo '</ul>';
+    }
 
-	echo '</li>';
+    echo '</li>';
 }
 echo '</ul>';
 
 echo '<h2> Check: $client->cacheVersion </h2>
 			<pre>';
-var_dump($client->cacheVersion);
+var_dump($client->getCacheVersion());
 echo '</pre>
 			<hr>
 			<p> Wait 2 Seconds </p>';
@@ -68,7 +67,7 @@ echo '</pre>
 sleep(2);
 
 echo '<pre>';
-var_dump($client->cacheVersion);
+var_dump($client->getCacheVersion());
 echo '</pre>
 			<hr>
 			<h2> deleteCacheBySlug "home" | flushCache </h2>';
@@ -76,7 +75,7 @@ echo '</pre>
 $client->deleteCacheBySlug('home');
 
 echo '<pre>';
-var_dump($client->cacheVersion);
+var_dump($client->getCacheVersion());
 echo '</pre>';
 
 $client->flushCache();
@@ -125,6 +124,5 @@ echo '<h2> getTags | getTagsAsStringArray </h2>
 var_dump($data);
 echo '</pre>';
 echo '<hr>';
-
 
 echo '</div>';
