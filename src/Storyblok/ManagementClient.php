@@ -2,6 +2,7 @@
 
 namespace Storyblok;
 
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -79,7 +80,7 @@ class ManagementClient extends BaseClient
             $responseObj = $this->client->request('POST', $endpointUrl, $requestOptions);
 
             return $this->responseHandler($responseObj);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             throw new ApiException(self::EXCEPTION_GENERIC_HTTP_ERROR . ' - ' . $e->getMessage(), $e->getCode());
         }
     }
@@ -107,7 +108,7 @@ class ManagementClient extends BaseClient
             $responseObj = $this->client->request('PUT', $endpointUrl, $requestOptions);
 
             return $this->responseHandler($responseObj);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             throw new ApiException(self::EXCEPTION_GENERIC_HTTP_ERROR . ' - ' . $e->getMessage(), $e->getCode());
         }
     }
@@ -133,7 +134,7 @@ class ManagementClient extends BaseClient
             $responseObj = $this->client->request('DELETE', $endpointUrl, $requestOptions);
 
             return $this->responseHandler($responseObj);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             throw new ApiException(self::EXCEPTION_GENERIC_HTTP_ERROR . ' - ' . $e->getMessage(), $e->getCode());
         }
     }
