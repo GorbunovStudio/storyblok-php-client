@@ -212,8 +212,8 @@ class Client extends BaseClient
         $options['serializer'] = 'php';
         $options['prefix_key'] = 'storyblokcache';
         $options['prefix_tag'] = 'storyblokcachetag';
-        $defaultLifetime = \array_key_exists('default_lifetime', $options) ?
-            $options['default_lifetime'] : 0;
+        $defaultLifetime = \array_key_exists('default_lifetime', $options)
+            ? $options['default_lifetime'] : 0;
 
         switch ($driver) {
             case 'sqlite':
@@ -1047,7 +1047,7 @@ class Client extends BaseClient
         if ($this->isCache()) {
             $cacheItem = $this->cache->getItem($key);
             $cacheItem->set($value);
-            if ('object' === \gettype($value) && 'Storyblok\\Response' === \get_class($value) && \is_array($value->getBody()) && \array_key_exists('cv', $value->getBody())) {
+            if ('object' === \gettype($value) && 'Storyblok\Response' === \get_class($value) && \is_array($value->getBody()) && \array_key_exists('cv', $value->getBody())) {
                 // $cachedCv = $this->cache->getItem(self::CACHE_VERSION_KEY);
                 // $cachedCv->set($value->getBody()['cv']);
                 $this->setCacheVersion(false, $value->getBody()['cv']);

@@ -40,8 +40,8 @@ In this README file you will find information for using the Storyblok PHP client
 
 ## Installing the Storyblok PHP client
 You can install the Storyblok PHP Client via composer.
-Storyblok's PHP client requires PHP version 7.3 to 8.3.
-The suggestion is to use an actively supported version of PHP (8.2 and 8.3).
+This fork requires PHP `^8.1` and is tested on PHP 8.1 through 8.5.
+Use an actively supported PHP version for production.
 
 If you want to install the _stable_ release of Storyblok PHP client you can launch:
 ```bash
@@ -548,7 +548,7 @@ In case you are using the API V2, to keep a consistent behaviour with the API V1
 ## Code Quality
 
 The package includes tools for tests and code formatting:
-- [PestPHP](https://pestphp.com/)
+- [PHPUnit](https://phpunit.de/)
 - [PHP CS Fixer](https://cs.symfony.com/)
 To execute the code quality suite you can use:
 ```shell
@@ -556,8 +556,14 @@ composer run all-check
 ```
 that executes:
 - vendor/bin/php-cs-fixer fix
-- vendor/bin/pest
+- vendor/bin/phpstan analyse
+- vendor/bin/phpunit --exclude-group integration
 
+Run `composer test` for the offline unit suite or `composer test-integration` for
+the live Storyblok API tests. Deprecations, notices, and warnings fail the suite.
+Composer selects PHPUnit 10.5 on PHP 8.1, PHPUnit 11.5 on PHP 8.2, and PHPUnit 12
+on PHP 8.3 through 8.5. Reinstall dependencies when changing PHP versions; a lock
+file generated on a newer PHP version may not work on an older one.
 
 
 ## 🔗 Related Links
