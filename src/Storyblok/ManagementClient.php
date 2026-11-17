@@ -37,12 +37,12 @@ class ManagementClient extends BaseClient
     public function get($endpointUrl, $payload = [])
     {
         try {
-            $query = http_build_query($payload, null, '&');
+            $query = http_build_query($payload, '', '&');
             $string = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $query);
 
             $requestOptions = [
-                RequestOptions::QUERY   => $string,
-            	RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()]
+                RequestOptions::QUERY => $string,
+                RequestOptions::HEADERS => ['Authorization' => $this->getApiKey()],
             ];
 
             if ($this->getProxy()) {
@@ -52,7 +52,7 @@ class ManagementClient extends BaseClient
             $responseObj = $this->client->request('GET', $endpointUrl, $requestOptions);
 
             return $this->responseHandler($responseObj);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             throw new ApiException(self::EXCEPTION_GENERIC_HTTP_ERROR . ' - ' . $e->getMessage(), $e->getCode());
         }
     }
@@ -61,7 +61,7 @@ class ManagementClient extends BaseClient
      * @param string $endpointUrl
      * @param array  $payload
      *
-     * @return \stdClass
+     * @return Response
      *
      * @throws ApiException
      */

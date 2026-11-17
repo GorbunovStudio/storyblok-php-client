@@ -1,8 +1,12 @@
+> [!WARNING]  
+> This package is discontinued and will only receive critical security updates.\
+> Please use the new official [PHP Content API Client](https://github.com/storyblok/php-content-api-client).
+
 <div style="text-align:center">
 	<a  href="https://www.storyblok.com?utm_source=github.com&utm_medium=readme&utm_campaign=php-client"  align="center">
 		<img  src="https://a.storyblok.com/f/88751/1776x360/dc6e51a5fd/sb-php.png"  alt="Storyblok Logo">
 	</a>
-	<h1  style="text-align:center">Storyblok PHP Client</h1>
+	<h1  style="text-align:center">Storyblok PHP Client - Deprecated</h1>
 	<p  style="text-align:center">This is the official <a href="https://www.storyblok.com?utm_source=github.com&utm_medium=referral&utm_campaign=php-client">Storyblok</a> PHP client to easily access the Content Delivery API and Management API.</p>
 </div>
 
@@ -36,8 +40,8 @@ In this README file you will find information for using the Storyblok PHP client
 
 ## Installing the Storyblok PHP client
 You can install the Storyblok PHP Client via composer.
-Storyblok's PHP client requires PHP version 7.3 to 8.2.
-The suggestion is to use an actively supported version of PHP (8.1 and 8.2).
+This fork requires PHP `^8.1` and is tested on PHP 8.1 through 8.5.
+Use an actively supported PHP version for production.
 
 If you want to install the _stable_ release of Storyblok PHP client you can launch:
 ```bash
@@ -89,7 +93,7 @@ $result = $managementClient->get('spaces/' . $spaceId . '/stories')->getBody();
 print_r($result['stories']);
 ```
 
-With `getBody()` method you can access the body response, and then access the `'`stories'` key, to access the story list.
+With `getBody()` method you can access the body response, and then access the `stories` key, to access the story list.
 
 ### Create data, post() method
 If you need to create data, you have to perform an HTTP request with the `POST` method.
@@ -109,7 +113,7 @@ $story = [
 ];
 $result = $managementClient->post(
     'spaces/' . $spaceId . '/stories/',
-    [ 'space' => $story ]
+    [ 'story' => $story ]
     )->getBody();
 print_r($result);
 ```
@@ -128,7 +132,7 @@ $story = [
 ];
 $result = $managementClient->put(
     'spaces/' . $spaceId . '/stories/' . $storyId,
-    [ 'space' => $story ]
+    [ 'story' => $story ]
     )->getBody();
 print_r($result);
 ```
@@ -150,7 +154,7 @@ print_r($result);
 
 ### Using spaces created in other regions for Management API
 
-When creating a Space, you can select the EU, US, CA, AP region. The default region is EU.  
+When creating a Space, you can select the EU, US, CA, AP region. The default region is EU.
 ```
 EU: api.storyblok.com
 US: api-us.storyblok.com
@@ -203,7 +207,7 @@ $client = new StoryblokClient('your-storyblok-readonly-accesstoken');
 
 ### Using spaces created in the other regions
 
-When you create a Space, you can select the region: EU, US, CA or AP.  
+When you create a Space, you can select the region: EU, US, CA or AP.
 
 For example:
 If you want to access a Space created in US region, you need to define the `apiRegion` parameter with the `us` value (or `US`):
@@ -229,7 +233,7 @@ $client = new Client(
 );
 ```
 
-Now you have the `Storyblok\Client` instance you can start consuming data. 
+Now you have the `Storyblok\Client` instance you can start consuming data.
 
 ### Load a Story by slug
 
@@ -544,7 +548,7 @@ In case you are using the API V2, to keep a consistent behaviour with the API V1
 ## Code Quality
 
 The package includes tools for tests and code formatting:
-- [PestPHP](https://pestphp.com/)
+- [PHPUnit](https://phpunit.de/)
 - [PHP CS Fixer](https://cs.symfony.com/)
 To execute the code quality suite you can use:
 ```shell
@@ -552,8 +556,14 @@ composer run all-check
 ```
 that executes:
 - vendor/bin/php-cs-fixer fix
-- vendor/bin/pest
+- vendor/bin/phpstan analyse
+- vendor/bin/phpunit --exclude-group integration
 
+Run `composer test` for the offline unit suite or `composer test-integration` for
+the live Storyblok API tests. Deprecations, notices, and warnings fail the suite.
+Composer selects PHPUnit 10.5 on PHP 8.1, PHPUnit 11.5 on PHP 8.2, and PHPUnit 12
+on PHP 8.3 through 8.5. Reinstall dependencies when changing PHP versions; a lock
+file generated on a newer PHP version may not work on an older one.
 
 
 ## 🔗 Related Links

@@ -1,20 +1,21 @@
 {
     "name": "storyblok/php-client",
     "description": "Storyblok Client to easily call the publishing api",
+    "abandoned": "storyblok/php-content-api-client",
     "type": "library",
     "keywords": ["storyblok", "api", "integration", "cms"],
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.3.0",
-        "guzzlehttp/guzzle": "^7.4",
-        "symfony/cache": "^4.0|^5.0|^6.0|^7.0",
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.10",
+        "symfony/cache": "^6.4 || ^7.4",
         "ext-json": "*"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.4.0",
-        "pestphp/pest": "1.21.2",
-        "phpstan/phpstan": "^1.10.59"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpunit/phpunit": "^10.5.62 || ^11.5.50 || ^12.5.22",
+        "phpstan/phpstan": "^1.12.34"
     },
     "provide": {
         "psr/simple-cache-implementation": "1.0|2.0|3.0"
@@ -42,16 +43,12 @@
             ]
         }
     },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
     "scripts": {
-        "test": "pest",
-        "test-ci": "pest --ci",
+        "test": "phpunit --exclude-group integration",
+        "test-ci": "@test --colors=never",
+        "test-integration": "phpunit --group integration",
         "phpstan": "phpstan analyse",
-        "test-coverage": "pest --coverage",
+        "test-coverage": "@test --coverage-text",
         "format": "php-cs-fixer fix --allow-risky=yes --using-cache=no",
         "cs": "php-cs-fixer fix --dry-run --using-cache=no",
         "all-check": [
